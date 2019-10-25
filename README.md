@@ -9,8 +9,6 @@
 ------
 
 ### Description
-
-------
 Ce programme exécute n'importe quel shellcode que vous lui donnez. Pouvez-vous générer un shell et l'utiliser pour lire le fichier flag.txt? Vous pouvez trouver le programme dans / problem / handy-shellcode_4_037bd47611d842b565cfa1f378bfd8d9 sur le serveur shell. La source
 ------
 
