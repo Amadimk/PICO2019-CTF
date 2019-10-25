@@ -4,7 +4,7 @@
 
 ### Titre : Handy_shellcode
 
-### Points : 250
+### Points : 50
 
 ------
 
