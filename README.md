@@ -1,8 +1,8 @@
-# web_250_challenge_name
+# Binary_Exploitation_50_Handy_shellcode
 
 ------
 
-### Titre : Challenge name
+### Titre : Handy_shellcode
 
 ### Points : 250
 
@@ -10,6 +10,8 @@
 
 ### Description
 
+------
+Ce programme exécute n'importe quel shellcode que vous lui donnez. Pouvez-vous générer un shell et l'utiliser pour lire le fichier flag.txt? Vous pouvez trouver le programme dans / problem / handy-shellcode_4_037bd47611d842b565cfa1f378bfd8d9 sur le serveur shell. La source
 ------
 
 Connectez-vous sur  `nc xxx.xxxxxxxxxx.fr 50004`,...
