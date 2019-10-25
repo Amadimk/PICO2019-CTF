@@ -8,17 +8,19 @@
 
 ------
 
-### Description
-Ce programme exécute n'importe quel shellcode que vous lui donnez. Pouvez-vous générer un shell et l'utiliser pour lire le fichier flag.txt? Vous pouvez trouver le programme dans / problem / handy-shellcode_4_037bd47611d842b565cfa1f378bfd8d9 sur le serveur shell. La source
+### Description 
+
+This program executes any shellcode that you give it. Can you spawn a shell and use that to read the flag.txt? You can find the program in /problems/handy-shellcode_6_f0b84e12a8162d64291fd16755d233eb on the shell server.
+
+Ce programme exécute n'importe quel shellcode que vous lui donnez. Pouvez-vous générer un shell et l'utiliser pour lire le fichier flag.txt? Vous pouvez trouver le programme dans /problems/handy-shellcode_4_037bd47611d842b565cfa1f378bfd8d9 sur le serveur shell. (Merci à google translate :))
+
 ------
 
 Connectez-vous sur  `nc xxx.xxxxxxxxxx.fr 50004`,...
 
 #### Hints
 
-* hint 1
-* hint 2
-* hint 3
+* You might be able to find some good shellcode online. (Vous pourrez peut-être trouver un bon shellcode en ligne ) Merci encore google. 
 
 ------
 
