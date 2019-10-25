@@ -16,19 +16,65 @@ Ce programme exécute n'importe quel shellcode que vous lui donnez. Pouvez-vous 
 
 ------
 
-Connectez-vous sur  `nc xxx.xxxxxxxxxx.fr 50004`,...
-
 #### Hints
 
 * You might be able to find some good shellcode online. (Vous pourrez peut-être trouver un bon shellcode en ligne ) Merci encore google. 
 
 ------
 
+On se connecte vite en ssh sur le serveur shell  `nc xxx.xxxxxxxxxx.fr 50004`,...
+
+
+
 ### Résolution
 
 ---
 
-Présenter très rapidement le challenge.
+Puis une fois on a les trois fichiers suivants : flag.txt, vuln.c vuln. Je commence d'abord par analyser le programme c :
+```c
+#include <unistd.h>
+#include <sys/types.h>
+
+#define BUFSIZE 148
+#define FLAGSIZE 128
+
+void vuln(char *buf){
+  gets(buf);
+  puts(buf);
+}
+
+int main(int argc, char **argv){
+
+  setvbuf(stdout, NULL, _IONBF, 0);
+  
+  // Set the gid to the effective gid
+  // this prevents /bin/sh from dropping the privileges
+  gid_t gid = getegid();
+  setresgid(gid, gid, gid);
+
+  char buf[BUFSIZE];
+
+  puts("Enter your shellcode:");
+  vuln(buf);
+
+  puts("Thanks! Executing now...");
+  
+  ((void (*)())buf)();
+
+
+  puts("Finishing Executing Shellcode. Exiting now...");
+  
+  return 0;
+}
+...
+```
+
+Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit donc essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) aprés quelques recherches sur le shellcode j'ai trouvé ce shellcode :
+```bash
+$ 
+...
+
+Et cela confirme ma supposition le programme recupere effectivement un input et à  les mêmes droits qu'etant sudo ou root le bit s nous l'indique et donc reste plus qu'a trouvé un  bon shellcode (google nous répond vite ) qu'on va donner à manger à notre binaire et hop on peut lire notre fichier flag.txt 
 
 Vous pouvez utiliser des blocs de code comme celui-ci:
 
