@@ -141,7 +141,7 @@ int main(int argc, char **argv){
 }
 ...
 ```
-Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode aprés  un offset qui est modulo 256. Pour un début je tente donc de lui envoyé mon shellcode directement :  
+Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode est executé après  un offset qui est modulo 256. Pour un début je tente donc de lui envoyé mon shellcode directement :  
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery1.png)
 
@@ -174,7 +174,7 @@ En RSA, d est beaucoup plus gros que e, pourquoi ne pas utiliser d pour chiffrer
 
 #### Hints
 
-* Qu'est-ce que e en général ?. 
+* C'est quoi la valeur de "e" en général ?. 
 
 ------
 
@@ -189,13 +189,13 @@ n: 92862994629391715025973326227583472781928051965578118595096998621079516709489
 e: 55534726162469284328134833374089125970705191581654686697554612920273578259533132513991933989595141790093397702407611338686991542277109389566561688171186896367716544979539952509680212727662952068636577177373930069448696402121437219985978915997070443631144215446467780163599410246770789910349000677632900578365
 ...
 ```
-En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA on comprends vite que dans cette configuration la clé privé d pour dechiffré le chiffré c est la valeur de e par défaut qui est généralement 65537.
+En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA je comprends vite que dans cette configuration la clé privé "d" pour dechiffré le chiffré c est la valeur de e par défaut qui est généralement 65537.
 
-Maintenant je connais tous les paramétres pour dechiffré le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message.(Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien manipuler RSA )
+connaissant maintenant tous les paramétres pour dechiffré le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message. (Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien manipuler RSA ).
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/rsadecryp.png)
 
-Puis ensuite avec python je converti la chaine hexadecimal dechiffré en utf-8 et bingo flag.
+Puis ensuite avec python j'ai converti la chaine hexadecimal dechiffré en utf-8 et bingo flag.
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/rsa2.png)
 
 `picoCTF{bad_1d3a5_4986370}`
