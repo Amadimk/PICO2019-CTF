@@ -67,7 +67,7 @@ int main(int argc, char **argv){
 ...
 ```
 
-Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit donc essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) aprés quelques recherches concernant le shellcode j'ai trouvé ce payload :
+Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) après quelques recherches concernant le shellcode j'ai trouvé ce payload :
 ```bash
 $ (echo -en "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"; cat )  | ./vuln
 ...
@@ -141,12 +141,12 @@ int main(int argc, char **argv){
 }
 ...
 ```
-Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode est executé après  un offset qui est modulo 256. Pour un début je tente donc de lui envoyé mon shellcode directement :  
+Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode est executé après  un offset qui est modulo 256. Pour un début je tente donc de lui envoyer mon shellcode directement :  
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery1.png)
 
-Mon shellcode est effectivement executé mais pas à la bonne adresse est donc j'ai un segmentation fault.
-Je tente aprés d'executé mon shellcode en remplissant le buffer de 256  caractères suivi de mon shellcode.
+Mon shellcode est effectivement executer mais pas à la bonne adresse et j'ai un segmentation fault.
+Je tente ensuite d'executer le programme en remplissant son buffer de 256  caractères suivi de mon shellcode.
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery2.png)
 
@@ -189,9 +189,9 @@ n: 92862994629391715025973326227583472781928051965578118595096998621079516709489
 e: 55534726162469284328134833374089125970705191581654686697554612920273578259533132513991933989595141790093397702407611338686991542277109389566561688171186896367716544979539952509680212727662952068636577177373930069448696402121437219985978915997070443631144215446467780163599410246770789910349000677632900578365
 ...
 ```
-En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA je comprends vite que dans cette configuration la clé privé "d" pour dechiffré le chiffré c est la valeur de e par défaut qui est généralement 65537.
+En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA je comprends vite que dans cette configuration la clé privé "d" pour dechiffrer le chiffré "c" est la valeur de "e" par défaut qui est généralement 65537.
 
-connaissant maintenant tous les paramétres pour dechiffré le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message. (Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien manipuler RSA ).
+connaissant maintenant tous les paramétres pour dechiffrer le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message. (Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien pour manipuler RSA ).
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/rsadecryp.png)
 
